@@ -5,12 +5,8 @@ name: Release (Ventura build)
 # charliemeyer2000/homebrew-tap, installed on a Mac we own.
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: Release tag (e.g. v0.15.10-ventura.1)
-        required: true
-        type: string
+  push:
+    tags: ["v*-ventura.*"]
 
 permissions:
   contents: write
@@ -40,10 +36,10 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ inputs.version }}
-          name: ${{ inputs.version }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body: |
-            `imsg` ${{ inputs.version }} built with the macOS 13 (Ventura) deployment target.
+            `imsg` ${{ github.ref_name }} built with the macOS 13 (Ventura) deployment target.
             Fork of openclaw/imsg; upstream supports macOS 14+ only. Ad-hoc signed.
           files: |
             imsg-macos.zip
