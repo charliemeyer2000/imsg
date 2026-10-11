@@ -29,8 +29,13 @@ jobs:
         run: make build
       - name: Verify deployment target
         run: |
-          otool -l bin/imsg | grep -A2 LC_BUILD_VERSION | grep -q 'minos 13.0'
-          otool -l bin/imsg-bridge-helper.dylib | grep -A2 LC_BUILD_VERSION | grep -q 'minos 13.0'
+          for f in bin/imsg bin/imsg-bridge-helper.dylib; do
+            for arch in x86_64 arm64; do
+              minos=$(otool -arch "$arch" -l "$f" | awk '/LC_BUILD_VERSION/{f=1} f&&/minos/{print $2; exit}')
+              echo "$f $arch minos $minos"
+              [[ "$minos" == 13.0 ]]
+            done
+          done
           bin/imsg --version
       - name: Archive
         run: |
