@@ -20,6 +20,11 @@ jobs:
         run: |
           sw_vers
           swift --version
+      - name: Resolve and patch SwiftPM dependencies
+        run: |
+          scripts/generate-version.sh
+          swift package resolve
+          scripts/patch-deps.sh
       - name: Build universal (deployment target macOS 13)
         run: make build
       - name: Verify deployment target
