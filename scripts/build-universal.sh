@@ -39,7 +39,7 @@ HELPER_CLANG_ARCH_ARGS=()
 for ARCH in "${HELPER_ARCH_LIST[@]}"; do
   HELPER_CLANG_ARCH_ARGS+=("-arch" "$ARCH")
 done
-clang -dynamiclib "${HELPER_CLANG_ARCH_ARGS[@]}" -mmacosx-version-min=14.0 -fobjc-arc \
+clang -dynamiclib "${HELPER_CLANG_ARCH_ARGS[@]}" -mmacosx-version-min=13.0 -fobjc-arc \
   -Wno-arc-performSelector-leaks \
   -install_name "@rpath/${HELPER_NAME}" \
   -framework Foundation \

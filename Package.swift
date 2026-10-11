@@ -3,13 +3,13 @@ import PackageDescription
 
 let package = Package(
   name: "imsg",
-  platforms: [.macOS(.v14)],
+  platforms: [.macOS(.v13)],
   products: [
     .library(name: "IMsgCore", targets: ["IMsgCore"]),
     .executable(name: "imsg", targets: ["imsg"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/steipete/Commander.git", from: "0.3.0"),
+    .package(path: "Vendor/Commander"),
     .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.16.0"),
     .package(url: "https://github.com/stephencelis/CSQLite", from: "3.50.4"),
     .package(url: "https://github.com/PhoneNumberKit/PhoneNumberKit.git", from: "5.0.12"),

@@ -1,15 +1,6 @@
 {
-  "originHash" : "f05bdb8294e1449b217342ff244a0e6d735f95e8aba870956a18451cd6b2f02d",
+  "originHash" : "ffc59d2b1d17fc389589c00c3c15bacb5031e56fe1d641982a6a5ffc46aba93f",
   "pins" : [
-    {
-      "identity" : "commander",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/steipete/Commander.git",
-      "state" : {
-        "revision" : "3f5a3cb1f19ce7ca79fdc2111a09dfb3da200c1c",
-        "version" : "0.3.0"
-      }
-    },
     {
       "identity" : "csqlite",
       "kind" : "remoteSourceControl",

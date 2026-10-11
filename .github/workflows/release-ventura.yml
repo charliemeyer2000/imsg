@@ -1,0 +1,50 @@
+name: Release (Ventura build)
+
+# Builds the universal `imsg` + bridge helper with the macOS 13 deployment target and attaches
+# `imsg-macos.zip` to a GitHub release. Ad-hoc signed (no notarization): the only consumer is
+# charliemeyer2000/homebrew-tap, installed on a Mac we own.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release tag (e.g. v0.15.10-ventura.1)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: |
+          sw_vers
+          swift --version
+      - name: Build universal (deployment target macOS 13)
+        run: make build
+      - name: Verify deployment target
+        run: |
+          otool -l bin/imsg | grep -A2 LC_BUILD_VERSION | grep -q 'minos 13.0'
+          otool -l bin/imsg-bridge-helper.dylib | grep -A2 LC_BUILD_VERSION | grep -q 'minos 13.0'
+          bin/imsg --version
+      - name: Archive
+        run: |
+          cd bin
+          zip -ry ../imsg-macos.zip imsg imsg-bridge-helper.dylib *.bundle
+          cd ..
+          shasum -a 256 imsg-macos.zip | tee imsg-macos.zip.sha256
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: ${{ inputs.version }}
+          body: |
+            `imsg` ${{ inputs.version }} built with the macOS 13 (Ventura) deployment target.
+            Fork of openclaw/imsg; upstream supports macOS 14+ only. Ad-hoc signed.
+          files: |
+            imsg-macos.zip
+            imsg-macos.zip.sha256
